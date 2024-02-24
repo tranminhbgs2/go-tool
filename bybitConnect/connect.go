@@ -45,8 +45,8 @@ func InitClient(apiKey, apiSecret string) *bybit.Client {
 // Lấy dữ liệu Kline từ Bybit
 func FetchMarketKline(client *bybit.Client, symbol, interval string, limit int) (*bybit.ServerResponse, error) {
 	marketKline, err := client.NewMarketKlineService("kline", "linear", symbol, interval).Limit(limit).Do(context.Background())
+	fmt.Printf("Error FetchMarketKline: %v\n", err)
 	if err != nil {
-		fmt.Errorf("Error FetchMarketKline: %+v\n", err)
 		return nil, err
 	}
 	return marketKline, nil
