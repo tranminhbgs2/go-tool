@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"go-tool/bybitConnect" // Sửa lại đường dẫn phù hợp với package của bạn
+	"os"
 	"strconv"
 	"sync"
 	"time"
@@ -69,12 +70,18 @@ func setupRouter() *gin.Engine {
 
 func main() {
 	// Khởi tạo Bybit client
-	client = bybitConnect.InitClient("8wjvoQ1N9IUjnJHYSh", "gQjBlsZX8aHKvBceahj3alS0xE65Gz0CcCjX")
+	apiKey := os.Getenv("BYBIT_API_KEY")
+	apiSecret := os.Getenv("BYBIT_API_SECRET")
+	client = bybitConnect.InitClient(apiKey, apiSecret)
 
 	// Bắt đầu goroutine để cập nhật dữ liệu định kỳ
 	go fetchData()
 
 	// Cấu hình và khởi động HTTP server với GIN
 	r := setupRouter()
-	r.Run() // listen and serve on 0.0.0.0:8080 (default)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Port mặc định
+	}
+	r.Run(":" + port) // listen and serve on 0.0.0.0:8080 (default)
 }
