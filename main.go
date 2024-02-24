@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"go-tool/bybitConnect" // Sửa lại đường dẫn phù hợp với package của bạn
-	"log"
 	"os"
 	"strconv"
 	"sync"
@@ -74,7 +73,7 @@ func main() {
 	// Load .env file
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		fmt.Printf("Error loading .env file")
 	}
 	// Khởi tạo Bybit client
 	apiKey := os.Getenv("BYBIT_API_KEY")
