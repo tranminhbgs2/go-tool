@@ -72,6 +72,7 @@ func main() {
 	// Khởi tạo Bybit client
 	apiKey := os.Getenv("BYBIT_API_KEY")
 	apiSecret := os.Getenv("BYBIT_API_SECRET")
+	fmt.Println("apiSecret:", apiSecret)
 	client = bybitConnect.InitClient(apiKey, apiSecret)
 
 	// Bắt đầu goroutine để cập nhật dữ liệu định kỳ
