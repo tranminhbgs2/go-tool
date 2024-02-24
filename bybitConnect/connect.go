@@ -46,6 +46,7 @@ func InitClient(apiKey, apiSecret string) *bybit.Client {
 func FetchMarketKline(client *bybit.Client, symbol, interval string, limit int) (*bybit.ServerResponse, error) {
 	marketKline, err := client.NewMarketKlineService("kline", "linear", symbol, interval).Limit(limit).Do(context.Background())
 	if err != nil {
+		fmt.Errorf("Error FetchMarketKline: %+v\n", err)
 		return nil, err
 	}
 	return marketKline, nil
@@ -60,7 +61,7 @@ func AnalyzeKlineData(marketKline *bybit.ServerResponse) (MarketResult, error) {
 	}
 
 	if kline.RetCode != 0 {
-		return result, fmt.Errorf("Error: %s", kline.RetMsg)
+		return result, fmt.Errorf("error: %s", kline.RetMsg)
 	}
 
 	results, err := ParseResultJSON(kline.Result)
@@ -83,7 +84,7 @@ func CalculatePriceChange(result MarketResult) (float64, float64, string, error)
 		return 0, 0, "", err
 	}
 
-	priceChange :=  newPrice - oldPrice
+	priceChange := newPrice - oldPrice
 	percentageChange := (priceChange / oldPrice) * 100
 
 	return newPrice, oldPrice, fmt.Sprintf("%.2f%%", percentageChange), nil

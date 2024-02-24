@@ -3,12 +3,14 @@ package main
 import (
 	"fmt"
 	"go-tool/bybitConnect" // Sửa lại đường dẫn phù hợp với package của bạn
+	"log"
 	"os"
 	"strconv"
 	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	bybit "github.com/wuhewuhe/bybit.go.api"
 )
 
@@ -69,6 +71,11 @@ func setupRouter() *gin.Engine {
 }
 
 func main() {
+	// Load .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	// Khởi tạo Bybit client
 	apiKey := os.Getenv("BYBIT_API_KEY")
 	apiSecret := os.Getenv("BYBIT_API_SECRET")
